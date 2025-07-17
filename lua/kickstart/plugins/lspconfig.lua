@@ -235,13 +235,13 @@ return {
             },
           },
         },
-        vue_ls = {
-          init_options = {
-            typescript = {
-              tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
-            },
-          },
-        },
+        -- vue_ls = {
+        --   init_options = {
+        --     typescript = {
+        --       tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
+        --     },
+        --   },
+        -- },
         gopls = {
           enable = true,
         },
@@ -298,6 +298,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'volar',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
