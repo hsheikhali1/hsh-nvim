@@ -24,7 +24,7 @@ return {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim',    opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -182,14 +182,65 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      local vue_language_server = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/@vue/language-server'
       local servers = {
         vtsls = {
-          enable = true,
+          cmd = { 'vtsls', '--stdio' },
+          filetypes = { 'vue', 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
+          root_markers = {
+            'tsconfig.json',
+            'package.json',
+            'jsconfig.json',
+            '.git',
+          },
           settings = {
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                maxInlayHintLength = 30,
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                },
+              },
+              tsserver = {
+                globalPlugins = {
+                  {
+                    name = '@vue/typescript-plugin',
+                    location = vue_language_server,
+                    languages = { 'vue' },
+                    configNamespace = 'typescript',
+                    enableForWorkspaceTypeScriptVersions = true,
+                  },
+                },
+              },
+            },
             typescript = {
-              inlay_hint = { enable = true }
-            }
-          }
+              updateImportsOnFileMove = { enabled = 'always' },
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = 'literals' },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+            javascript = {
+              updateImportsOnFileMove = { enabled = 'always' },
+            },
+          },
+        },
+        vue_ls = {
+          init_options = {
+            typescript = {
+              tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
+            },
+          },
         },
         gopls = {
           enable = true,
@@ -252,6 +303,7 @@ return {
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+
         automatic_installation = false,
         handlers = {
           function(server_name)
