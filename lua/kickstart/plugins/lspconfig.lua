@@ -184,6 +184,14 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local vue_language_server = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/@vue/language-server'
       local servers = {
+        vue_ls = {
+          filetypes = { 'vue', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'json' },
+          init_options = {
+            vue = {
+              hybridMode = false,
+            },
+          },
+        },
         vtsls = {
           cmd = { 'vtsls', '--stdio' },
           filetypes = { 'vue', 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
@@ -298,7 +306,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'volar',
+        'vue_ls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
