@@ -4,7 +4,7 @@
 --  For more options, you can see `:help option-list`
 
 -- custom config to load stuff for work
-vim.g.work_config = true
+vim.g.work_config = false
 
 -- Make line numbers default
 vim.o.number = true
