@@ -1,7 +1,4 @@
-return vim.g.work_config and {
-  'github/copilot.vim',
-  lazy = false,
-} or {
+return {
   'Exafunction/windsurf.nvim',
   dependencies = {
     'nvim-lua/plenary.nvim',
