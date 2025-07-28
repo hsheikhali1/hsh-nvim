@@ -14,6 +14,20 @@ return {
     { '<leader>e', ':Neotree toggle<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
+    reveal = true,
+    window = {
+      width = 50,
+      mappings = {
+        ['P'] = {
+          'toggle_preview',
+          config = {
+            use_float = true,
+            use_snacks_image = true,
+            use_image_nvim = true,
+          },
+        },
+      },
+    },
     filesystem = {
       window = {},
     },
